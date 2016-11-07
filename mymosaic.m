@@ -15,7 +15,7 @@ function [img_mosaic] = mymosaic(img_input)
     
     for i = 1 : numImages
         tempImage = img_input{1, i};
-        grayImCell{1, i} = rgb2gray(tempImage);;
+        grayImCell{1, i} = rgb2gray(tempImage);
     end
 
     % Perform HARRIS corner detection.
@@ -66,11 +66,11 @@ function [img_mosaic] = mymosaic(img_input)
     for i = 1 : (numImages - 1)
         matches = matchesCell{1, i};
        
-        x1 = xPointsCell{1, i}(matches > 0);
-        y1 = yPointsCell{1, i}(matches > 0);
+        x1 = xPointsCell{1, i}(matches > 0); % Destination.
+        y1 = yPointsCell{1, i}(matches > 0); 
         
-        x2 = xPointsCell{1, i + 1}(matches > 0);
-        y2 = yPointsCell{1, i + 1}(matches > 0);
+        x2 = xPointsCell{1, (i + 1)}(matches(matches > 0)); % Source.
+        y2 = yPointsCell{1, (i + 1)}(matches(matches > 0));
         
         corrCell{1, i, 1} = x1;
         corrCell{1, i, 2} = y1;
@@ -81,8 +81,7 @@ function [img_mosaic] = mymosaic(img_input)
     % Filter feature matches using RANSAC.
     HCell = cell(1, numImages);
     
-    HCell{1, 1}     = eye(3);
-    inlier_ind_cell = cell(1, numImages - 1);
+    HCell{1, 1} = eye(3);
     
     for i = 1 : (numImages - 1)
         xPointsSource = corrCell{1, i, 3};
@@ -91,10 +90,18 @@ function [img_mosaic] = mymosaic(img_input)
         xPointsDest = corrCell{1, i, 1};
         yPointsDest = corrCell{1, i, 2};
         
-        [H, inlier_ind] = ransac_est_homography(xPointsSource, yPointsSource, xPointsDest, yPointsDest, 100);
+        [H, ~] = ransac_est_homography(xPointsSource, yPointsSource, xPointsDest, yPointsDest, 100);
 
-        HCell{1, (i + 1)}     = H;
-        inlier_ind_cell{1, i} = inlier_ind;
+        HCell{1, (i + 1)} = H;
+    end
+    
+    % Need to compute homographies (all relative to the first image).
+    for i = 3 : numImages
+        hLeft  = HCell{1, (i - 1)};
+        hRight = HCell{1, i};
+        
+        HNew = hLeft * hRight;
+        HCell{1, i} = HNew;
     end
     
     %% Construct MOSAIC (DOPE DOPE DOPE).
@@ -112,7 +119,7 @@ function [img_mosaic] = mymosaic(img_input)
     
     for i = 1 : numImages
         I = img_input{1, i};
-        [xlim(1, :), ylim(1, :)] = outputLimits(TFormCell{1, i}, [1 size(I, 2)], [1 size(I, 1)]);
+        [xlim(i, :), ylim(i, :)] = outputLimits(TFormCell{1, i}, [1 size(I, 2)], [1 size(I, 1)]);
     end
 
     xMin = min(xlim(:));
@@ -131,14 +138,14 @@ function [img_mosaic] = mymosaic(img_input)
         outputImageCell{1, i} = imwarp(img_input{1, i}, TFormCell{1, i}, 'OutputView', panorama);
     end
 
-    C = outputImageCell{1, i};
+    C = outputImageCell{1, 1};
     
     for i = 2 : numImages
         C = imadd(C, outputImageCell{1, i});
     end
 
     figure;
-    image(flipud(C));
+    image(C);
 
     % dummy output
     img_mosaic = zeros(2, 2);
