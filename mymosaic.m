@@ -97,27 +97,50 @@ function [img_mosaic] = mymosaic(img_input)
         inlier_ind_cell{1, i} = inlier_ind;
     end
     
+    %% Construct MOSAIC (DOPE DOPE DOPE).
+    % Generate transforms.
+    TFormCell = cell(1, numImages);
+    
+    for i = 1 : numImages
+        tformtemp = projective2d(transpose(HCell{1, i}));
+        TFormCell{1, i} = tformtemp;
+    end
+    
+    % Determine world limits for each homography transform.
+    xlim = [];
+    ylim = [];
+    
+    for i = 1 : numImages
+        I = img_input{1, i};
+        [xlim(1, :), ylim(1, :)] = outputLimits(TFormCell{1, i}, [1 size(I, 2)], [1 size(I, 1)]);
+    end
 
-x1 = x1(inlier_ind == 1);
-y1 = y1(inlier_ind == 1);
+    xMin = min(xlim(:));
+    xMax = max(xlim(:));
 
-x2 = x2(inlier_ind == 1);
-y2 = y2(inlier_ind == 1);
+    yMin = min(ylim(:));
+    yMax = max(ylim(:));
+
+    % Generate panorama.
+    I = img_input{1, i};
+    panorama = imref2d(size(I), [xMin xMax], [yMin yMax]);
+
+    outputImageCell = cell(1, numImages);
     
-   
-   
-   
-   
-    disp('jaun');
+    for i = 1 : numImages
+        outputImageCell{1, i} = imwarp(img_input{1, i}, TFormCell{1, i}, 'OutputView', panorama);
+    end
+
+    C = outputImageCell{1, i};
     
-    
-    
-    
-    
-    
-    
-    % Dummy output.
+    for i = 2 : numImages
+        C = imadd(C, outputImageCell{1, i});
+    end
+
+    figure;
+    image(flipud(C));
+
+    % dummy output
     img_mosaic = zeros(2, 2);
-
 
 end
