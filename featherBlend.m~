@@ -1,0 +1,57 @@
+% Author:       Austin Small
+% Class:        CIS-581
+% Project:      3
+% File Name:    featherBlend.m
+% Input:        img_cell:   A cell array that contains images to blend.
+% Output:       img_blend:  A blended image.
+% Description:  This function performs feathered alpha blending of all
+%               images in the input cell array.
+
+function [img_blend] = featherBlend(img_cell)
+
+
+    numImages = size(img_cell, 2);
+    
+    
+    img1 = img_cell{1, 1};
+    img2 = img_cell{1, 2};
+    
+    img1_gray = rgb2gray(img1);
+    img2_gray = rgb2gray(img2);
+    
+    img1_bin = (img1_gray > 0);
+    img2_bin = (img2_gray > 0);
+    
+    img1_bin_inv = (img1_bin == 0);
+    img2_bin_inv = (img2_bin == 0);
+    
+    %combined_bin = img1_bin & img2_bin;
+    %combined_bin = (combined_bin == 0);
+    
+    dist_map_1 = bwdist(img1_bin_inv);
+    disp_map_2 = bwdist(img2_bin_inv);
+    
+    %ombined_bin = img1_bin & img2_bin;
+    
+    %dist_map_1 = bwdist(img1_bin);
+    %dist_map_1 = dist_map_1(combined_bin);
+    
+    
+    
+    
+    
+    
+    figure;
+    imagesc(dist_map);
+    
+    
+    
+    disp('jaun');
+    
+    % Dummy output.
+    img_blend = zeros(2, 2);
+    
+
+
+
+end

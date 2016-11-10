@@ -141,9 +141,15 @@ function [img_mosaic] = mymosaic(img_input)
     C = outputImageCell{1, 1};
     
     for i = 2 : numImages
-        C = imadd(C, outputImageCell{1, i});
+        C = featherBlend(C, outputImageCell{1, i}); %imadd(C, outputImageCell{1, i});
     end
 
+%     tempCell = cell(1, 2);
+%     tempCell{1, 1} = outputImageCell{1, 1};
+%     tempCell{1, 2} = outputImageCell{1, 2};
+%     
+%     featherBlend(tempCell);
+    
     figure;
     image(C);
 
