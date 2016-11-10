@@ -23,14 +23,21 @@
 %           Threshold??
 
 function [H, inlier_ind] = ransac_est_homography(x1, y1, x2, y2, thresh)    
-    % Number of iterations.
-    N = 10000;
+    numDataPoints = size(x1, 1);
+    
+    % Number of iterations.  We will run at least 10000 iterations.
+    % However, RANSAC may choose to run more iterations, based on the 
+    % quality of the results.
+    N    = 10000; 
+    NMax = 50^5;
 
     % Record best homography / number of inliers encountered thus far.
     HBest       = [];
     InliersBest = 0;
     
-    for i = 1 : N
+    i = 0;
+    
+    while (i < N)
         disp(i / N)
         
         % Randomly sample four feature pairs.
@@ -47,13 +54,6 @@ function [H, inlier_ind] = ransac_est_homography(x1, y1, x2, y2, thresh)
 
         [X1, Y1] = apply_homography(HTemp, xPointsSource, yPointsSource);
 
-%         figure;
-%         plot(X1, Y1,'bx')
-%         figure;
-%         plot(xPointsDestination, yPointsDestination, 'rx');
-% 
-
-
         % Apply homography to all point correspondences and count number
         % of inliers.
         [xDestTemp, yDestTemp] = apply_homography(HTemp, x1, y1);   
@@ -63,7 +63,24 @@ function [H, inlier_ind] = ransac_est_homography(x1, y1, x2, y2, thresh)
         if (InliersTemp > InliersBest)
             InliersBest = InliersTemp;
             HBest = HTemp;   
+            
+            % Update number of iterations of RANSAC.
+            e = (numDataPoints - InliersBest) / numDataPoints; % Ratio of outliers to sample size.
+            p = 0.99;                                % Probability that at least one sample yields inliers.
+            s = 4;                                   % Min number of points to fit model.
+            
+            NTemp = log(1 - p) / log(1 - (1 - e)^s);
+
+            if (NTemp > N)
+                if (NTemp > NMax)
+                    N = NMax;
+                else
+                    N = NTemp;
+                end
+            end
         end
+        
+        i = i + 1;
     end
     
     H = HBest;

@@ -30,7 +30,7 @@ function [x, y, rMax] = anms(cimg, max_pts)
     cornerVect = horzcat(cornerVect, -1 * ones(size(cornerVect, 1), 1));
     
     % Only keep up to 10% of corners (this is the corner threshold).
-    cornerVect = cornerVect(1:round(.05 * size(cornerVect, 1)), :);
+    cornerVect = cornerVect(1:round(.1 * size(cornerVect, 1)), :);
     numPoints = size(cornerVect, 1);
     
     % Now I need to compare each point against points of greater corner
