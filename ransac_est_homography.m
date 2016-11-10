@@ -29,7 +29,7 @@ function [H, inlier_ind] = ransac_est_homography(x1, y1, x2, y2, thresh)
     % However, RANSAC may choose to run more iterations, based on the 
     % quality of the results.
     N    = 10000; 
-    NMax = 50^5;
+    NMax = 100000;
 
     % Record best homography / number of inliers encountered thus far.
     HBest       = [];
