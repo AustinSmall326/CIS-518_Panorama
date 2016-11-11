@@ -52,8 +52,6 @@ function [H, inlier_ind] = ransac_est_homography(x1, y1, x2, y2, thresh)
         
         HTemp = est_homography(xPointsDestination, yPointsDestination, xPointsSource, yPointsSource);
 
-        [X1, Y1] = apply_homography(HTemp, xPointsSource, yPointsSource);
-
         % Apply homography to all point correspondences and count number
         % of inliers.
         [xDestTemp, yDestTemp] = apply_homography(HTemp, x1, y1);   

@@ -42,13 +42,7 @@ function [img_mosaic] = mymosaic(img_input)
         [xTemp, yTemp] = check_borders(grayImCell{1, i}, xPointsCell{1, i}, yPointsCell{1, i});
         xPointsCell{1, i} = xTemp;
         yPointsCell{1, i} = yTemp;
-   end
-   
-   
-   
-
-        
-        
+   end 
         
     %% Identify feature descriptors for each image.
     descsCell = cell(1, numImages);
@@ -68,9 +62,7 @@ function [img_mosaic] = mymosaic(img_input)
     
     % Filter correspondences between image pairs.
     corrCell = cell(1, numImages - 1, 4);
-    
-    nonCorrCell = cell(1, numImages - 1, 4);
-    
+        
     for i = 1 : (numImages - 1)
         matches = matchesCell{1, i};
        
@@ -83,65 +75,9 @@ function [img_mosaic] = mymosaic(img_input)
         corrCell{1, i, 1} = x1;
         corrCell{1, i, 2} = y1;
         corrCell{1, i, 3} = x2;
-        corrCell{1, i, 4} = y2;
-        
-        
-        x1 = xPointsCell{1, i}(matches == -1); % Destination.
-        y1 = yPointsCell{1, i}(matches == -1); 
-        
-        x2 = xPointsCell{1, (i + 1)};
-        y2 = yPointsCell{1, (i + 1)};
-        
-        x2(matches(matches > 0)) = [];
-        y2(matches(matches > 0)) = [];
-        
-       
-
-%         
-        nonCorrCell{1, i, 1} = x1;
-        nonCorrCell{1, i, 2} = y1;
-        nonCorrCell{1, i, 3} = x2;
-        nonCorrCell{1, i, 4} = y2;
-        
-        
-        
-        
+        corrCell{1, i, 4} = y2; 
     end
     
-    
-    
-    
-      %% Test printing
-
-        figure;
-        subplot(1, 2, 1);
-        image(img_input{1, 1});
-        hold on;
-        image(img_input{1, 1});
-        plot(corrCell{1, 1, 1}, corrCell{1, 1, 2}, 'b.', 'MarkerSize', 20);
-        plot(nonCorrCell{1, 1, 1}, nonCorrCell{1, 1, 2}, 'r.', 'MarkerSize', 15);
-        
-        subplot(1, 2, 2);
-        image(img_input{1, 2});
-        hold on;
-        image(img_input{1, 2});
-        plot(corrCell{1, 1, 3}, corrCell{1, 1, 4}, 'b.', 'MarkerSize', 20);
-        plot(nonCorrCell{1, 1, 3}, nonCorrCell{1, 1, 4}, 'r.', 'MarkerSize', 15);
-
-        
-        set(gcf,'NextPlot','add');
-axes;
-h = title('Inliers (Blue) and Outliers (Red) - First Pair', 'FontSize', 13);
-set(gca,'Visible','off');
-set(h,'Visible','on');
-
-
-        disp('jaun');
-        
-        
-        
-        
-
     %% Estimate homographies for each image pair.
     % Middle image.
     HCellMid = cell(1, 1);
@@ -157,21 +93,9 @@ set(h,'Visible','on');
         xPointsDest = corrCell{1, i, 3};
         yPointsDest = corrCell{1, i, 4};
         
-        [H, inlier_idx] = ransac_est_homography(xPointsSource, yPointsSource, xPointsDest, yPointsDest, 50);
+        [H, ~] = ransac_est_homography(xPointsSource, yPointsSource, xPointsDest, yPointsDest, 50);
 
         HCellLeft{1, i} = H;
-        
-        
-        
-        
-       
-        
-        
-        
-        
-        
-        
-        
     end
     
     % Image to right of middle image.
@@ -184,45 +108,9 @@ set(h,'Visible','on');
         xPointsDest = corrCell{1, (midIndex + i - 1), 1};
         yPointsDest = corrCell{1, (midIndex + i - 1), 2};
         
-        [H, inlier_idx] = ransac_est_homography(xPointsSource, yPointsSource, xPointsDest, yPointsDest, 100);
+        [H, ~] = ransac_est_homography(xPointsSource, yPointsSource, xPointsDest, yPointsDest, 100);
 
         HCellRight{1, i} = H;
-        
-        
-        
-         figure;
-        subplot(1, 2, 1);
-        image(img_input{1, 1});
-        hold on;
-                plot(xPointsDest(inlier_idx), yPointsDest(inlier_idx), 'b.', 'MarkerSize', 20);
-                xPointsDest(inlier_idx) = [];
-        yPointsDest(inlier_idx) = [];
-        
-        plot(xPointsDest, yPointsDest, 'r.', 'MarkerSize', 15);
-        
-        subplot(1, 2, 2);
-        image(img_input{1, 2});
-        hold on;
-
-plot(xPointsSource(inlier_idx), yPointsSource(inlier_idx), 'b.', 'MarkerSize', 20);
-        xPointsSource(inlier_idx) = [];
-        yPointsSource(inlier_idx) = [];
-        
-        plot(xPointsSource, yPointsSource, 'r.', 'MarkerSize', 15);
-        
-        set(gcf,'NextPlot','add');
-axes;
-h = title('RANSAC Inliers (Blue) and Outliers (Red) - First Pair', 'FontSize', 13);
-set(gca,'Visible','off');
-set(h,'Visible','on');
-
-
-        disp('jaun');
-        
-        
-        
-        
-        
     end
     
     % Need to update left homographies (all relative to the middle image).
@@ -289,15 +177,8 @@ set(h,'Visible','on');
     
     % Generate feather blended mosaic image.
     for i = 2 : numImages
-        C = imadd(C, outputImageCell{1, i}); 
+        C = featherBlend(C, outputImageCell{1, i}); 
     end
-    
-    figure;
-    image(C);
-    title('Final Mosaic', 'FontSize', 14);
-    axis off
-
-    % dummy output
-    img_mosaic = zeros(2, 2);
-
+   
+    img_mosaic = C;
 end
