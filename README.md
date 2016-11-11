@@ -3,7 +3,7 @@ Overview:
 
 This project focused on image feature detection, feature matching and image mosaic techniques.  The goal of this project was to create an imge mosaic or stitching, which is a collection of small images which are aligned properly to create one larger image.  The techniques utilized in this project were referenced from the following papers.
 
--"Multi-image Matching using Multi-scale image patches", Brown, M.; Szeliski, R.; Winder, S. CVPR 2015
+  *"Multi-image Matching using Multi-scale image patches", Brown, M.; Szeliski, R.; Winder, S. CVPR 2015
 
 Contact Information:
 --------------------
