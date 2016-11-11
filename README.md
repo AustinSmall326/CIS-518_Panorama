@@ -1,7 +1,7 @@
 Overview:
 ------------------
 
-This project focused on image feature detection, feature matching and image mosaic techniques.  The goal of this project was to create an imge mosaic or stitching, which is a collection of small images which are aligned properly to create one larger image.  The techniques utilized in this project were referenced from the following papers.
+This project focused on image feature detection, feature matching and image mosaic techniques.  The goal of this project was to create an image mosaic or stitching, which is a collection of small images which are aligned properly to create one larger image.  The techniques utilized in this project were referenced from the following papers.
 
 - "Multi-image Matching using Multi-scale image patches", Brown, M.; Szeliski, R.; Winder, S. CVPR 2015
 - "Shape Matching and Object Recognition Using Shape Contexts", Belongie, S., Malik, J. and Puzicha, J. PAMI 2002: http://www.eecs.berkeley.edu/Research/Projects/CS/vision/shape
@@ -11,9 +11,18 @@ Project Walk-Through and Results:
 
 - **Capture Images**
 
+  On the last day of the project, I spent a few hours in downtown Philadelphia taking pictures.  I took these cityscape pictures overlooking the Schuylkill River.
+
 ![input images](https://cloud.githubusercontent.com/assets/9031637/20200008/907d6346-a77c-11e6-83ab-93d1ffd29f49.jpg)
 
 - Detect Corner Features
+
+  The first step is to detect corner featuers in an image.  This was accomplished using the HARRIS corner detection algorithm.  Note that the MATLAB built-in cornermetric function was used to accomplish this task.  The computed corner strength can be visualized below.
+
+![cornerresults](https://cloud.githubusercontent.com/assets/9031637/20200190/b3bab2c2-a77d-11e6-976b-a57f3575ec7a.jpg)
+
+
+
 - Adaptive Non-Maximal Suppression
 - Extract Feature Descriptor
 - Match feature descriptors between two images
