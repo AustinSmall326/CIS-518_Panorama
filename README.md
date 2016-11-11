@@ -18,12 +18,12 @@ Project Walk-Through and Results:
 
   The first step is to detect corner featuers in an image.  This was accomplished using the HARRIS corner detection algorithm.  Note that the MATLAB built-in cornermetric function was used to accomplish this task.  The computed corner strength can be visualized below.
 
-![cornerresults](https://cloud.githubusercontent.com/assets/9031637/20200190/b3bab2c2-a77d-11e6-976b-a57f3575ec7a.jpg)
+![cornerresults](https://cloud.githubusercontent.com/assets/9031637/20203072/4e7251b2-a792-11e6-93cb-cda767209a6c.jpg)
 - **Adaptive Non-Maximal Suppression**
 
   After detecting corner features, the goal is to select a well distribued 500 pixel subset of those points.  Adaptive Non-Maximal Suppression accomplished this goal by selecting 500 points with the largest associated radius, specifying a region over which they can be considered a corner of maximum strength.  This offers a uniform distribution of points over the image, as seen below.
 
-  ![anms](https://cloud.githubusercontent.com/assets/9031637/20200291/65fd7fe6-a77e-11e6-869b-42029cebe6c3.jpg)
+  ![anms](https://cloud.githubusercontent.com/assets/9031637/20203064/3ca8bcc8-a792-11e6-84c6-1d31cf338493.jpg)
 - **Extract Feature Descriptor**
 
   Each of the 500 points taken from ANMS may be characterized by a (41 x 41 pixel) subsample of the overall image take around that point.  Within that 41 x 41 patch, pixels were sampled at intervals of 5 pixels, resulting in an 8 x 8 pixel feature descriptor for each point.  Sampling from within the 41 x 41 patch creates a blurring effect, which improves the robustness of the algorithm in comparing feature patches across images.
