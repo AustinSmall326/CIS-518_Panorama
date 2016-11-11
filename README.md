@@ -47,6 +47,8 @@ Project Walk-Through and Results:
 
 ![stitched image](https://cloud.githubusercontent.com/assets/9031637/20202916/1dc4cca8-a791-11e6-9d3d-d3ddcea40b9d.jpg)
 
+- **Blending Images In Mosaic**
+
   Lastly, and beyone the scope of the project, I implemended an alpha feathered blending of the images.  In overlapping regions, this feature decreases RGB color intensity as the distance from the source image increases.  With this feature, it becomes nearly impossible to distinguish between images!
 
 ![cityscape mosaic](https://cloud.githubusercontent.com/assets/9031637/20202977/a16b13f0-a791-11e6-9fb3-1c2d3eb737bd.jpg)
