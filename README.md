@@ -31,8 +31,14 @@ Project Walk-Through and Results:
 
   Each of the 500 points taken from ANMS may be characterized by a (41 x 41 pixel) subsample of the overall image take around that point.  Within that 41 x 41 patch, pixels were sampled at intervals of 5 pixels, resulting in an 8 x 8 pixel feature descriptor for each point.  Sampling from within the 41 x 41 patch creates a blurring effect, which improves the robustness of the algorithm in comparing feature patches across images.
 
-- Match feature descriptors between two images
-- RANSAC
+- **Match Feature Descriptors Between Two Images**
+
+  The feature descriptors are compared across pairs of images in order to determine 
+  point correspondences across images.  The quality of a match between feature descriptors is determined by the Sum Squared Distance (SSD) of pixel data in each of two descriptors.
+
+- **RANSAC**
+
+  Not all of the matches just determined will be correct.
 - Generate Image Mosaic
 
 
