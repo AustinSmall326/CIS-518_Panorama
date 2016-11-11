@@ -9,7 +9,10 @@ This project focused on image feature detection, feature matching and image mosa
 Project Walk-Through and Results:
 --------------------
 
-- Capture Images
+- **Capture Images**
+
+![input images](https://cloud.githubusercontent.com/assets/9031637/20200008/907d6346-a77c-11e6-83ab-93d1ffd29f49.jpg)
+
 - Detect Corner Features
 - Adaptive Non-Maximal Suppression
 - Extract Feature Descriptor
