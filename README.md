@@ -1,16 +1,9 @@
-About Code Base:
+Overview:
 ------------------
 
-This project encompasses a full robotics platform (Locomotion, Vision, Localization, and Behavior), designed  
-and built by the University of Pennsylvania's Robot Soccer Team (UPennalizers).  Using this code base, the team  
-regularly competes in robotic soccer tournaments including the annual RoboCup competition (www.robocup.org).
+This project focused on image feature detection, feature matching and image mosaic techniques.  The goal of this project was to create an imge mosaic or stitching, which is a collection of small images which are aligned properly to create one larger image.  The techniques utilized in this project were referenced from the following papers.
 
-The code contained in this repository represents our team's efforts to re-develop the code base in order to  
-improve modularity, documentation, and the implementation.  Currently, emphasis has been placed on re-developing  
-the locomotion system.  To date, the system includes a fully functioning open-loop omni-directional gait.
-
-Future work will include continued improvements to the locomotion system as well as migration / development of  
-the vision, localization, and behavior systems.  
+-"Multi-image Matching using Multi-scale image patches", Brown, M.; Szeliski, R.; Winder, S. CVPR 2015
 
 Contact Information:
 --------------------
