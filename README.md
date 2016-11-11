@@ -6,8 +6,19 @@ This project focused on image feature detection, feature matching and image mosa
 - "Multi-image Matching using Multi-scale image patches", Brown, M.; Szeliski, R.; Winder, S. CVPR 2015
 - "Shape Matching and Object Recognition Using Shape Contexts", Belongie, S., Malik, J. and Puzicha, J. PAMI 2002: http://www.eecs.berkeley.edu/Research/Projects/CS/vision/shape
 
-Contact Information:
+Project Walk-Through and Results:
 --------------------
+
+- Capture Images
+- Detect Corner Features
+- Adaptive Non-Maximal Suppression
+- Extract Feature Descriptor
+- Match feature descriptors between two images
+- RANSAC
+- Generate Image Mosaic
+
+
+
 
 Primary Contributors:	Austin Small and Alex Baucom  
 Email:					ausmall@seas.upenn.edu  
